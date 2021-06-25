@@ -10,54 +10,71 @@ class Express {
 		virtual ~Express() {}
 };
 
-class BinaryExpress : public Express {
-	protected:Express *left, *right;
+class Binary: public Express {
+	protected:
+		Express *left, *right;
 
 	public:
-		  BinaryExpress(Express *left, Express *right) : left(left), right(right) {}
-		  ~BinaryExpress() {
+		  Binary(Express *left, Express *right) : left(left), right(right) {}
+		  ~Binary() {
 			  delete left;
 			  delete right;
 		  }
 };
 
-class AddExp : public BinaryExpress {
+class Parentheses : public Express {
+	protected:
+		Express *exp;
+
 	public:
-		AddExp(Express *left, Express *right) : BinaryExpress(left, right) {
+		Parentheses(Express *exp) : exp(exp) {}
+		~Parentheses() {
+			delete exp;
+		}
+
+		int calc() {
+			return exp->calc();
+		}
+
+};
+
+class Add : public Binary {
+	public:
+		Add(Express *left, Express *right) : Binary(left, right) {
 		}
 		int calc() {
 			return left->calc() + right->calc();
 		}
 };
 
-class SubExp : public BinaryExpress {
+class Sub : public Binary {
 	public:
-		SubExp(Express *left, Express *right) : BinaryExpress(left, right) {}
+		Sub(Express *left, Express *right) : Binary(left, right) {}
 		int calc() {
 			return left->calc() - right->calc();
 		}
 };
 
-class MulExp : public BinaryExpress {
+class Mul : public Binary {
 	public:
-		MulExp(Express *left, Express *right) : BinaryExpress(left, right) {}
+		Mul(Express *left, Express *right) : Binary(left, right) {}
 		int calc() {
 			return left->calc() * right->calc();
 		}
 };
-class DivExp : public BinaryExpress {
+class Div : public Binary {
 	public:
-		DivExp(Express *left, Express *right) : BinaryExpress(left, right) {}
+		Div(Express *left, Express *right) : Binary(left, right) {}
 		int calc() {
 			return left->calc() / right->calc();
 		}
 };
 
-class ValueExp : public Express {
+class Value : public Express {
 	int value;
 
 	public:
-	ValueExp(int value) :value(value) {}
+	Value(int value) :value(value) {}
 	int calc() {return value;}
-	~ValueExp() = default;
+	~Value() = default;
 };
